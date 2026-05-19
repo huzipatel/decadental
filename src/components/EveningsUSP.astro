@@ -3,11 +3,11 @@ import ToothWire from "./ToothWire.astro";
 ---
 
 <section id="late" class="relative bg-obsidian border-b border-graphite overflow-hidden">
-  <!-- Background tooth meshes -->
-  <div class="absolute -right-32 -top-24 text-acid/20 pointer-events-none hidden md:block">
+  <!-- Background tooth meshes (lg+ only — avoid overflow on tablet/mobile) -->
+  <div class="absolute -right-32 -top-24 text-acid/20 pointer-events-none hidden lg:block">
     <ToothWire variant="molar" size={640} speed={0.5} tilt={0.6} lat={14} lon={20} />
   </div>
-  <div class="absolute -left-40 -bottom-32 text-neon/15 pointer-events-none hidden md:block">
+  <div class="absolute -left-40 -bottom-32 text-neon/15 pointer-events-none hidden lg:block">
     <ToothWire variant="canine" size={520} speed={-0.4} start={45} tilt={0.3} lat={14} lon={18} />
   </div>
 
@@ -40,7 +40,8 @@ import ToothWire from "./ToothWire.astro";
         <p class="eyebrow eyebrow-fog">access window</p>
         <span class="font-mono text-[10px] text-acid">● open</span>
       </div>
-      <p class="font-display font-medium text-[180px] leading-[0.82] text-acid tnum mt-3 glow-neon" style="text-shadow: 0 0 32px rgba(200,255,58,0.35);">22:00</p>
+      <p class="font-display font-medium text-acid tnum mt-3 glow-neon leading-[0.82]"
+         style="font-size: clamp(72px, 22vw, 180px); text-shadow: 0 0 32px rgba(200,255,58,0.35);">22:00</p>
       <p class="font-mono uppercase tracking-[0.2em] text-[12px] mt-2 text-mist">last reservation · mon — fri</p>
 
       <div class="mt-8 border-t border-graphite pt-4 grid grid-cols-3 gap-3 text-[12px] font-mono">

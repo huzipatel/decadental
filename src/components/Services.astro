@@ -49,18 +49,18 @@ const services = [
     </ul>
 
     <!-- Trailing technical diagram -->
-    <div class="mt-24 grid md:grid-cols-12 gap-10 items-center">
-      <div class="md:col-span-5 text-center md:text-left">
+    <div class="mt-24 flex flex-col md:grid md:grid-cols-12 gap-10 items-center">
+      <div class="md:col-span-5 text-center md:text-left w-full min-w-0">
         <p class="eyebrow eyebrow-plasma">specimen // I-021</p>
-        <h3 class="font-display text-[32px] mt-4 text-bone leading-[1.05]">
+        <h3 class="font-display text-[28px] sm:text-[32px] mt-4 text-bone leading-[1.05]">
           A tooth is a small piece of engineering.
         </h3>
-        <p class="mt-5 text-mist text-[14px] leading-[1.7] max-w-md">
+        <p class="mt-5 text-mist text-[14px] leading-[1.7] max-w-md mx-auto md:mx-0">
           Every restoration is a calibration problem: contact, occlusion, margin,
           shade. We measure, we model, we finish. The chair is a workstation.
         </p>
       </div>
-      <div class="md:col-span-7 flex items-center justify-center">
+      <div class="md:col-span-7 flex items-center justify-center w-full min-w-0">
         <ToothWire variant="incisor" size={420} class="text-plasma" speed={0.6} tilt={0.15} lat={18} lon={20} />
       </div>
     </div>

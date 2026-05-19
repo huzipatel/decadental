@@ -3,8 +3,8 @@ import ToothWire from "./ToothWire.astro";
 ---
 
 <section id="contact" class="relative bg-void border-b border-graphite overflow-hidden">
-  <!-- ambient mesh backdrop -->
-  <div class="absolute -right-40 top-0 text-neon/15 pointer-events-none hidden md:block">
+  <!-- ambient mesh backdrop (lg+ only) -->
+  <div class="absolute -right-40 top-0 text-neon/15 pointer-events-none hidden lg:block">
     <ToothWire variant="molar" size={700} speed={0.4} tilt={0.5} lat={14} lon={22} />
   </div>
 
@@ -27,7 +27,7 @@ import ToothWire from "./ToothWire.astro";
         </div>
         <div>
           <p class="eyebrow eyebrow-fog">channel.email</p>
-          <a href="mailto:hello@decadental.com" class="font-mono text-[16px] text-bone hover:text-neon mt-1 block">hello@decadental.com</a>
+          <a href="mailto:hello@decadental.com" class="font-mono text-[16px] text-bone hover:text-neon mt-1 block break-all">hello@decadental.com</a>
         </div>
         <div>
           <p class="eyebrow eyebrow-fog">node.address</p>
