@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* DECADENTAL — futurist dark concept.
+   Reference: terminal HUDs, Trapcode/Cyberpunk dashboards, Linear's darkest, A24 sci-fi posters. */
+@theme {
+  /* Base — true blacks with a hint of blue */
+  --color-void: #050608;          /* deepest bg */
+  --color-obsidian: #0b0d12;      /* surface 1 */
+  --color-onyx: #14171e;          /* surface 2 / cards */
+  --color-graphite: #1f242e;      /* borders / dividers */
+  --color-steel: #3a4250;         /* subtle UI */
+  --color-fog: #6e7787;           /* secondary text */
+  --color-mist: #b8c0cc;          /* tertiary text */
+  --color-bone: #e8ecf2;          /* primary text on dark */
+  --color-paper: #f5f7fb;         /* near-white */
+
+  /* Signature accent: electric cyan ↔ violet, with acid lime for tension */
+  --color-neon: #6cf6ff;          /* primary cyan */
+  --color-neon-deep: #1eb4d4;
+  --color-plasma: #b56bff;        /* violet secondary */
+  --color-acid: #c8ff3a;          /* lime, used sparingly */
+  --color-rose: #ff5fa2;          /* warning / spike */
+
+  --font-display: "Space Grotesk", "Inter Tight", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", monospace;
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; background: var(--color-void); }
+  body {
+    font-family: var(--font-body);
+    background: var(--color-void);
+    color: var(--color-bone);
+    font-feature-settings: "ss01", "cv11", "tnum";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--color-neon); color: var(--color-void); }
+
+  .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+  .font-mono    { font-family: var(--font-mono); }
+  .tnum         { font-variant-numeric: tabular-nums; }
+
+  /* Mono terminal-style eyebrow */
+  .eyebrow {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 11px;
+    color: var(--color-neon);
+  }
+  .eyebrow-fog  { color: var(--color-fog); }
+  .eyebrow-bone { color: var(--color-bone); }
+  .eyebrow-plasma { color: var(--color-plasma); }
+  .eyebrow-acid { color: var(--color-acid); }
+
+  /* Cross-hair registration marks for editorial / engineering feel */
+  .crosshair::before {
+    content: "+";
+    display: inline-block;
+    margin-right: 0.5em;
+    color: var(--color-neon);
+  }
+
+  /* Display headings */
+  .display-xl {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(56px, 11vw, 160px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  .display-lg {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(40px, 6.5vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+  }
+
+  /* Tabular HUD blocks */
+  .hud {
+    border: 1px solid var(--color-graphite);
+    background: linear-gradient(180deg, rgba(20,23,30,0.6), rgba(11,13,18,0.6));
+    backdrop-filter: blur(4px);
+  }
+
+  /* Subtle scanline overlay */
+  .scanlines::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.025) 0 1px,
+      transparent 1px 3px
+    );
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  /* Background grid (faint) */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(108,246,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(108,246,255,0.06) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Rotating wireframe — utility class. */
+  .spin-slow  { animation: spin 28s linear infinite; transform-origin: 50% 50%; }
+  .spin-slower { animation: spin 48s linear infinite; transform-origin: 50% 50%; }
+  .spin-rev   { animation: spin 36s linear infinite reverse; transform-origin: 50% 50%; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Slow vertical drift for accent strokes */
+  .drift {
+    animation: drift 9s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    0%   { transform: translateY(-6px); opacity: 0.55; }
+    100% { transform: translateY( 6px); opacity: 1.0; }
+  }
+
+  /* Glow on neon text — restraint */
+  .glow-neon  { text-shadow: 0 0 18px rgba(108,246,255,0.45); }
+  .glow-plasma { text-shadow: 0 0 22px rgba(181,107,255,0.40); }
+
+  /* Reduced motion respect */
+  @media (prefers-reduced-motion: reduce) {
+    .spin-slow, .spin-slower, .spin-rev, .drift { animation: none; }
+  }
+}

@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import Mark from "../components/Mark.astro";
+import ToothWire from "../components/ToothWire.astro";
+---
+<Base title="404 // Decadental" description="Resource not located.">
+  <main class="relative min-h-screen flex items-center justify-center bg-void text-bone px-6 text-center overflow-hidden">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <ToothWire variant="occlusion" size={520} class="text-rose/40" />
+    </div>
+    <div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+
+    <div class="relative">
+      <Mark size={64} class="text-neon mx-auto" />
+      <p class="eyebrow mt-8 text-rose">error · 404</p>
+      <h1 class="display-lg mt-4 text-bone">Resource not located.</h1>
+      <p class="mt-6 text-mist font-mono text-[14px]">The path you requested does not resolve.</p>
+      <a href="/" class="mt-10 inline-flex items-center gap-3 bg-neon text-void font-mono uppercase tracking-[0.2em] text-[12px] px-6 py-3 hover:bg-acid transition-colors">
+        → return to root
+      </a>
+    </div>
+  </main>
+</Base>

@@ -1,0 +1,49 @@
+---
+import Mark from "./Mark.astro";
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-void border-t border-graphite text-mist">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 py-16 grid md:grid-cols-12 gap-10">
+
+    <div class="md:col-span-5">
+      <a href="#" class="flex items-center gap-3" aria-label="Decadental home">
+        <Mark size={44} class="text-neon" />
+        <span class="flex flex-col leading-none">
+          <span class="font-display font-semibold text-[22px] tracking-tight text-bone">DECADENTAL</span>
+          <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-fog mt-1">/ dentistry, recompiled</span>
+        </span>
+      </a>
+      <p class="mt-6 max-w-sm text-[13px] leading-[1.7]">
+        Forward-deployed dental practice. London. Calibrated by digital scanning,
+        finished by hand. Late hours, plain English, written rationale.
+      </p>
+    </div>
+
+    <div class="md:col-span-3">
+      <p class="eyebrow eyebrow-fog">channels</p>
+      <ul class="mt-3 space-y-1.5 font-mono text-[13px]">
+        <li><a href="tel:+440000000000" class="hover:text-neon">0000 000 0000</a></li>
+        <li><a href="mailto:hello@decadental.com" class="hover:text-neon">hello@decadental.com</a></li>
+        <li class="text-fog mt-3">node 01 · London</li>
+      </ul>
+    </div>
+
+    <div class="md:col-span-4">
+      <p class="eyebrow eyebrow-fog">access window</p>
+      <ul class="mt-3 space-y-1 font-mono text-[13px] tnum">
+        <li>Mon — Fri &nbsp; 07:00 — 22:00</li>
+        <li>Saturday &nbsp; 09:00 — 17:00</li>
+        <li>Sunday &nbsp; emergency only</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-graphite">
+    <div class="mx-auto max-w-7xl px-5 sm:px-8 py-5 flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.25em] text-fog">
+      <span>© {year} Decadental · all rights reserved</span>
+      <span>Regulated · GDC · CQC</span>
+      <span class="text-neon">v 2.6.0 — build 0524</span>
+    </div>
+  </div>
+</footer>

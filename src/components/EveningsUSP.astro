@@ -1,0 +1,62 @@
+---
+import ToothWire from "./ToothWire.astro";
+---
+
+<section id="late" class="relative bg-obsidian border-b border-graphite overflow-hidden">
+  <!-- Background occlusion wire -->
+  <div class="absolute -right-32 -top-24 text-acid/15 pointer-events-none">
+    <ToothWire variant="occlusion" size={640} />
+  </div>
+  <div class="absolute -left-40 -bottom-32 text-neon/12 pointer-events-none">
+    <ToothWire variant="molar" size={520} />
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 md:py-32 grid md:grid-cols-12 gap-12 items-start">
+
+    <div class="md:col-span-7">
+      <p class="eyebrow eyebrow-acid crosshair">module 03 // access window</p>
+      <h2 class="display-lg mt-6 text-bone">
+        Open until<br/>
+        <span class="font-mono tnum text-acid">22:00</span>,
+        five nights a week.
+      </h2>
+      <p class="mt-8 max-w-xl text-mist text-[16px] leading-[1.65]">
+        The standard nine-to-five forces patients to choose between care and a day's
+        wages. We hold capacity until 22:00 Monday to Friday because the working day
+        does not stop being the working day at five.
+      </p>
+
+      <a
+        href="#contact"
+        class="mt-12 inline-flex items-center gap-3 bg-acid text-void font-mono uppercase tracking-[0.2em] text-[13px] px-7 py-4 hover:bg-neon transition-colors"
+      >
+        Reserve a late session →
+      </a>
+    </div>
+
+    <!-- Big 22:00 HUD -->
+    <aside class="md:col-span-5 hud p-6 relative">
+      <div class="flex items-center justify-between border-b border-graphite pb-3">
+        <p class="eyebrow eyebrow-fog">access window</p>
+        <span class="font-mono text-[10px] text-acid">● open</span>
+      </div>
+      <p class="font-display font-medium text-[180px] leading-[0.82] text-acid tnum mt-3 glow-neon" style="text-shadow: 0 0 32px rgba(200,255,58,0.35);">22:00</p>
+      <p class="font-mono uppercase tracking-[0.2em] text-[12px] mt-2 text-mist">last reservation · mon — fri</p>
+
+      <div class="mt-8 border-t border-graphite pt-4 grid grid-cols-3 gap-3 text-[12px] font-mono">
+        <div>
+          <p class="text-fog uppercase tracking-[0.15em]">Sat</p>
+          <p class="text-bone text-[18px] tnum">17:00</p>
+        </div>
+        <div>
+          <p class="text-fog uppercase tracking-[0.15em]">Sun</p>
+          <p class="text-bone text-[18px] tnum">emerg.</p>
+        </div>
+        <div>
+          <p class="text-fog uppercase tracking-[0.15em]">SLA</p>
+          <p class="text-acid text-[18px] tnum">≤ 4h</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>

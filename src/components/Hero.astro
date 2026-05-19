@@ -1,0 +1,105 @@
+---
+import ToothWire from "./ToothWire.astro";
+---
+
+<section class="relative bg-void text-bone overflow-hidden border-b border-graphite">
+  <!-- Background grid -->
+  <div class="absolute inset-0 grid-bg opacity-60 pointer-events-none"></div>
+
+  <!-- Centre rotating composition: stacked tooth wireframes positioned apart for clarity. -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <!-- Big occlusion behind, off-centre right -->
+    <div class="absolute top-1/2 left-[72%] -translate-x-1/2 -translate-y-1/2 hidden md:block">
+      <ToothWire variant="occlusion" size={820} class="text-neon/40" />
+    </div>
+    <!-- Molar, distinct, lower-right -->
+    <div class="absolute top-[58%] left-[78%] -translate-x-1/2 -translate-y-1/2 hidden md:block">
+      <ToothWire variant="molar" size={340} class="text-plasma/90" />
+    </div>
+    <!-- Incisor side-profile, low-left — unmistakably a tooth -->
+    <div class="absolute top-[18%] left-[-4%] hidden lg:block opacity-50">
+      <ToothWire variant="incisor" size={420} class="text-acid" />
+    </div>
+    <!-- Mobile fallback: single centred incisor -->
+    <div class="md:hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-35">
+      <ToothWire variant="incisor" size={420} class="text-neon" />
+    </div>
+  </div>
+
+  <!-- Scatter HUD labels for density -->
+  <div class="absolute inset-0 pointer-events-none hidden md:block font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+    <span class="absolute top-[14%] right-[12%] text-neon/80">+ scan.calibrated</span>
+    <span class="absolute top-[24%] right-[36%] text-plasma/80">target: M-016</span>
+    <span class="absolute top-[78%] right-[8%] text-acid/80">delta: 0.04mm</span>
+    <span class="absolute bottom-[18%] left-[42%] text-fog">▸ live render</span>
+  </div>
+
+  <!-- Subtle radial fade so text is legible over the composition -->
+  <div class="absolute inset-0 pointer-events-none"
+       style="background: radial-gradient(ellipse at 30% 50%, rgba(5,6,8,0.85) 0%, rgba(5,6,8,0.5) 45%, rgba(5,6,8,0.2) 75%, rgba(5,6,8,0) 100%);"></div>
+
+  <!-- Scanlines overlay -->
+  <div class="absolute inset-0 scanlines pointer-events-none"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8 pt-28 md:pt-40 pb-28 md:pb-40 grid md:grid-cols-12 gap-10 items-end min-h-[88vh]">
+    <div class="md:col-span-8 md:col-start-1">
+      <p class="eyebrow crosshair">node // London · 51.5074 °N · 0.1278 °W</p>
+      <h1 class="display-xl mt-8 text-bone">
+        Dentistry,<br/>
+        <span class="text-neon glow-neon">recompiled.</span>
+      </h1>
+      <p class="mt-10 max-w-2xl text-mist text-[18px] leading-[1.55]">
+        A forward-deployed dental practice. Calibrated by digital scanning, finished
+        by hand, available after the working day. We treat the chair as a workstation
+        and the appointment as a session.
+      </p>
+
+      <div class="mt-12 flex flex-wrap gap-3">
+        <a
+          href="#contact"
+          class="inline-flex items-center gap-3 bg-neon text-void font-mono uppercase tracking-[0.2em] text-[13px] px-7 py-4 hover:bg-acid transition-colors"
+        >
+          Reserve a session →
+        </a>
+        <a
+          href="#system"
+          class="inline-flex items-center gap-3 border border-graphite text-bone hover:border-neon hover:text-neon font-mono uppercase tracking-[0.2em] text-[13px] px-7 py-4 transition-colors"
+        >
+          Read the system
+        </a>
+      </div>
+    </div>
+
+    <!-- Telemetry HUD -->
+    <aside class="md:col-span-4 hud relative p-5">
+      <div class="flex items-center justify-between border-b border-graphite pb-3">
+        <p class="eyebrow eyebrow-fog">telemetry</p>
+        <span class="font-mono text-[10px] text-neon">● live</span>
+      </div>
+      <dl class="mt-4 space-y-3 text-[12px] font-mono tnum">
+        <div class="flex justify-between"><dt class="text-fog">node.location</dt><dd class="text-bone">LDN-01</dd></div>
+        <div class="flex justify-between"><dt class="text-fog">window.open</dt><dd class="text-bone">07:00 — 22:00</dd></div>
+        <div class="flex justify-between"><dt class="text-fog">latency.median</dt><dd class="text-bone">&lt; 7 days</dd></div>
+        <div class="flex justify-between"><dt class="text-fog">emergency.SLA</dt><dd class="text-acid">same day</dd></div>
+        <div class="flex justify-between"><dt class="text-fog">cqc.status</dt><dd class="text-neon">✓ registered</dd></div>
+        <div class="flex justify-between"><dt class="text-fog">gdc.status</dt><dd class="text-neon">✓ listed</dd></div>
+        <div class="flex justify-between"><dt class="text-fog">build.year</dt><dd class="text-bone">2026</dd></div>
+      </dl>
+      <div class="mt-5 pt-3 border-t border-graphite">
+        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">runtime / 04:21:08</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Bottom marquee -->
+  <div class="relative border-t border-graphite bg-obsidian">
+    <div class="mx-auto max-w-7xl px-5 sm:px-8 py-3 flex items-center gap-8 overflow-hidden text-[11px] font-mono uppercase tracking-[0.25em] text-fog whitespace-nowrap">
+      <span class="text-neon">▸ DECADENTAL</span>
+      <span>Forward-deployed dentistry</span>
+      <span class="text-plasma">▸ NODE 01 // LDN</span>
+      <span>Calibrated · finished by hand</span>
+      <span class="text-acid">▸ EMERGENCY · SAME DAY</span>
+      <span>v 2.6.0 build 0524</span>
+    </div>
+  </div>
+</section>

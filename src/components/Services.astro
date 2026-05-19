@@ -1,0 +1,68 @@
+---
+import ToothWire from "./ToothWire.astro";
+
+const services = [
+  { id: "S-01", title: "Diagnostic", body: "Full intraoral scanning, radiographs, and a written treatment narrative. Nothing recommended without a reason." },
+  { id: "S-02", title: "Restorative", body: "Composite, ceramic, gold where appropriate. Plans built around longevity, not the schedule." },
+  { id: "S-03", title: "Cosmetic", body: "Bonding, veneers, whitening. Conservative defaults. Reversibility preferred." },
+  { id: "S-04", title: "Implants", body: "Digitally planned, surgically placed, restored in-house. Single visits where feasible." },
+  { id: "S-05", title: "Endodontic", body: "Modern apex-located root canal therapy. Often a single visit, always under rubber dam." },
+  { id: "S-06", title: "Alignment", body: "Clear aligner therapy, dentist-supervised end to end. No mail-order outcomes." },
+  { id: "S-07", title: "Emergency", body: "Pain, swelling, breakage. Same-day triage. We hold capacity, every day." },
+  { id: "S-08", title: "Maintenance", body: "Hygiene, periodontal therapy, occlusal review. The unglamorous work that compounds." },
+];
+---
+
+<section id="system" class="relative bg-void border-b border-graphite overflow-hidden">
+  <!-- Subtle grid -->
+  <div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 md:py-32">
+
+    <div class="grid md:grid-cols-12 gap-10 items-end">
+      <div class="md:col-span-7">
+        <p class="eyebrow crosshair">module 02 // system</p>
+        <h2 class="display-lg mt-6 text-bone">
+          Eight modules,<br/>
+          <span class="text-plasma glow-plasma">one operating standard.</span>
+        </h2>
+      </div>
+      <p class="md:col-span-5 text-mist text-[15px] leading-[1.7]">
+        The practice runs as a single system: shared records, calibrated equipment,
+        one set of clinical defaults. Each module below is a discipline we deliver
+        in-house. They are interchangeable; they share a chair.
+      </p>
+    </div>
+
+    <ul class="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-graphite border border-graphite">
+      {services.map(s => (
+        <li class="group relative bg-void p-7 hover:bg-onyx transition-colors">
+          <div class="flex items-start justify-between">
+            <span class="font-mono text-[11px] uppercase tracking-[0.22em] text-neon">{s.id}</span>
+            <span class="font-mono text-[11px] text-fog group-hover:text-acid transition-colors">▸</span>
+          </div>
+          <h3 class="font-display font-medium text-[26px] tracking-tight mt-6 text-bone">{s.title}</h3>
+          <p class="mt-4 text-mist text-[13px] leading-[1.65]">{s.body}</p>
+          <p class="mt-8 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">quoted at consultation</p>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Trailing technical diagram -->
+    <div class="mt-24 grid md:grid-cols-12 gap-10 items-center">
+      <div class="md:col-span-5 text-center md:text-left">
+        <p class="eyebrow eyebrow-plasma">specimen // I-021</p>
+        <h3 class="font-display text-[32px] mt-4 text-bone leading-[1.05]">
+          A tooth is a small piece of engineering.
+        </h3>
+        <p class="mt-5 text-mist text-[14px] leading-[1.7] max-w-md">
+          Every restoration is a calibration problem: contact, occlusion, margin,
+          shade. We measure, we model, we finish. The chair is a workstation.
+        </p>
+      </div>
+      <div class="md:col-span-7 flex items-center justify-center">
+        <ToothWire variant="incisor" size={420} class="text-plasma" />
+      </div>
+    </div>
+  </div>
+</section>

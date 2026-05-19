@@ -1,0 +1,48 @@
+---
+const axioms = [
+  { n: "01", title: "Diagnosis precedes treatment.", body: "We do not recommend work without measurement, imaging, and a written rationale. If we don't know why, we don't proceed." },
+  { n: "02", title: "Reversible before irreversible.", body: "Where two options exist with similar outcomes, the one that preserves tooth structure wins. Every time." },
+  { n: "03", title: "The clock matters.", body: "Online reservations, real evening hours, same-day emergency triage. We respect the diary you arrived with." },
+  { n: "04", title: "One operator, full case.", body: "The dentist who diagnoses you delivers the work. No handoffs mid-treatment. No surprises mid-plan." },
+];
+---
+
+<section id="axioms" class="relative bg-void border-b border-graphite overflow-hidden">
+  <div class="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 md:py-32 grid md:grid-cols-12 gap-12 items-start">
+
+    <div class="md:col-span-4 md:sticky md:top-32">
+      <p class="eyebrow crosshair">module 04 // axioms</p>
+      <h2 class="display-lg mt-6 text-bone">
+        Four<br/><span class="text-neon glow-neon">non-negotiables.</span>
+      </h2>
+      <p class="mt-8 text-mist text-[15px] leading-[1.7] max-w-md">
+        Every practice has incentives. These are ours, written down in plain
+        English, so they can be held to. If we deviate, you can quote them back at us.
+      </p>
+
+      <div class="mt-10 pt-6 border-t border-graphite">
+        <p class="eyebrow eyebrow-fog">accreditation</p>
+        <p class="mt-3 font-mono text-[13px] text-bone leading-[1.7]">
+          General Dental Council<br/>
+          Care Quality Commission
+        </p>
+      </div>
+    </div>
+
+    <ul class="md:col-span-8 space-y-px bg-graphite">
+      {axioms.map(p => (
+        <li class="bg-void p-8 hover:bg-onyx transition-colors">
+          <div class="grid grid-cols-[60px,1fr] gap-6 items-start">
+            <span class="font-mono text-neon text-[18px] tnum">{p.n}</span>
+            <div>
+              <h3 class="font-display font-medium text-[26px] tracking-tight text-bone leading-[1.15]">{p.title}</h3>
+              <p class="mt-4 text-mist text-[14px] leading-[1.7] max-w-2xl">{p.body}</p>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,171 @@
+---
+/*
+ * ToothWire — abstract geometric tooth wireframe in SVG.
+ * Variants: "molar" (top-down crown plus root rings),
+ *           "incisor" (side profile + scan grid),
+ *           "occlusion" (polar/radial diagram).
+ * All stroke-only so they tint with `currentColor`.
+ */
+interface Props {
+  variant?: "molar" | "incisor" | "occlusion";
+  size?: number | string;
+  class?: string;
+  /** Disable rotation (for static placements like marks). */
+  static?: boolean;
+}
+const { variant = "molar", size = 360, class: cls = "", static: isStatic = false } = Astro.props;
+const cl = `${cls} ${isStatic ? "" : ""}`;
+---
+
+{variant === "molar" && (
+  <svg viewBox="0 0 400 400" width={size} height={size} class={cl} aria-hidden="true"
+       fill="none" stroke="currentColor" stroke-width="1">
+    <!-- Outer ring set, slowly rotating -->
+    <g class={isStatic ? "" : "spin-slower"} style="transform-origin: 200px 200px;">
+      <circle cx="200" cy="200" r="190" stroke-opacity="0.35" />
+      <circle cx="200" cy="200" r="172" stroke-opacity="0.22" stroke-dasharray="2 6" />
+      <circle cx="200" cy="200" r="148" stroke-opacity="0.4" />
+      <!-- Tick marks around outer circle -->
+      {Array.from({length: 36}).map((_, i) => {
+        const a = (i * 10) * Math.PI / 180;
+        const x1 = 200 + Math.cos(a) * 180;
+        const y1 = 200 + Math.sin(a) * 180;
+        const x2 = 200 + Math.cos(a) * 190;
+        const y2 = 200 + Math.sin(a) * 190;
+        return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke-opacity={i % 9 === 0 ? 1 : 0.4} stroke-width={i % 9 === 0 ? 1.5 : 0.8} />
+      })}
+    </g>
+
+    <!-- Inner crown wireframe - reverse rotation -->
+    <g class={isStatic ? "" : "spin-rev"} style="transform-origin: 200px 200px;">
+      <!-- Four cusps of a molar, plotted as a rounded square with inset arcs -->
+      <path d="M 110 130 Q 140 90  200 88  Q 260 90 290 130 Q 312 170 305 215 Q 295 275 250 305 Q 220 322 200 322 Q 180 322 150 305 Q 105 275 95 215 Q 88 170 110 130 Z"
+            stroke="currentColor" stroke-width="1.4" />
+      <!-- Cusp tips -->
+      <circle cx="148" cy="148" r="22" stroke-opacity="0.6" />
+      <circle cx="252" cy="148" r="22" stroke-opacity="0.6" />
+      <circle cx="148" cy="262" r="22" stroke-opacity="0.6" />
+      <circle cx="252" cy="262" r="22" stroke-opacity="0.6" />
+      <!-- Central pit (fossa) -->
+      <circle cx="200" cy="205" r="36" stroke-opacity="0.7" />
+      <circle cx="200" cy="205" r="10" stroke-opacity="0.9" />
+      <!-- Cross axis -->
+      <line x1="80" y1="205" x2="320" y2="205" stroke-opacity="0.25" stroke-dasharray="4 6" />
+      <line x1="200" y1="85" x2="200" y2="325" stroke-opacity="0.25" stroke-dasharray="4 6" />
+      <!-- Bisecting diagonals -->
+      <line x1="115" y1="120" x2="285" y2="290" stroke-opacity="0.18" />
+      <line x1="285" y1="120" x2="115" y2="290" stroke-opacity="0.18" />
+    </g>
+
+    <!-- Static engineering labels -->
+    <g font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" stroke="none" opacity="0.6">
+      <text x="200" y="20" text-anchor="middle">M-016 · OCCLUSAL</text>
+      <text x="20" y="206" >LAT</text>
+      <text x="372" y="206" text-anchor="end">MED</text>
+      <text x="200" y="395" text-anchor="middle">↕ MESIAL ↔ DISTAL</text>
+    </g>
+  </svg>
+)}
+
+{variant === "incisor" && (
+  <svg viewBox="0 0 400 600" width={size} height={size} class={cl} aria-hidden="true"
+       fill="none" stroke="currentColor" stroke-width="1">
+    <!-- Backplate scan grid -->
+    <g stroke-opacity="0.18">
+      {Array.from({length: 11}).map((_, i) => (
+        <line x1={40 + i * 32} y1="40" x2={40 + i * 32} y2="560" />
+      ))}
+      {Array.from({length: 17}).map((_, i) => (
+        <line x1="40" y1={40 + i * 32.5} x2="360" y2={40 + i * 32.5} />
+      ))}
+    </g>
+
+    <!-- Tooth profile - crown above, two roots below -->
+    <g class={isStatic ? "" : "drift"}>
+      <!-- Crown (incisor side profile) -->
+      <path d="M 150 90 Q 160 70 200 68 Q 240 70 250 90 L 258 220 Q 240 240 200 240 Q 160 240 142 220 Z"
+            stroke="currentColor" stroke-width="1.6" />
+      <!-- Gum line indicator -->
+      <line x1="120" y1="245" x2="280" y2="245" stroke-opacity="0.45" stroke-dasharray="2 4" />
+      <!-- Single tapered root -->
+      <path d="M 168 240 Q 175 360 195 480 Q 200 510 205 480 Q 225 360 232 240"
+            stroke="currentColor" stroke-width="1.4" />
+      <!-- Inner pulp chamber -->
+      <path d="M 188 110 Q 200 100 212 110 L 210 470 Q 200 490 190 470 Z"
+            stroke-opacity="0.55" stroke-dasharray="3 4" />
+      <!-- Enamel ridge -->
+      <line x1="155" y1="180" x2="245" y2="180" stroke-opacity="0.4" />
+    </g>
+
+    <!-- Measurement callouts -->
+    <g font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" stroke="none" opacity="0.65">
+      <text x="200" y="24" text-anchor="middle">I-021 · LATERAL PROJECTION</text>
+      <text x="20" y="100">90.0</text>
+      <text x="20" y="245">G-LINE</text>
+      <text x="20" y="490">490.0</text>
+    </g>
+    <!-- Measurement bracket on right -->
+    <g stroke="currentColor" stroke-opacity="0.6">
+      <line x1="300" y1="90" x2="320" y2="90" />
+      <line x1="300" y1="490" x2="320" y2="490" />
+      <line x1="320" y1="90" x2="320" y2="490" />
+    </g>
+    <text x="328" y="290" font-family="JetBrains Mono, monospace" font-size="10"
+          fill="currentColor" stroke="none" opacity="0.65">400.0</text>
+  </svg>
+)}
+
+{variant === "occlusion" && (
+  <svg viewBox="0 0 400 400" width={size} height={size} class={cl} aria-hidden="true"
+       fill="none" stroke="currentColor" stroke-width="1">
+    <!-- Outermost ring -->
+    <g class={isStatic ? "" : "spin-slow"} style="transform-origin: 200px 200px;">
+      <circle cx="200" cy="200" r="195" stroke-opacity="0.4" />
+      <!-- 32-position dental arch markers (16 upper / 16 lower) -->
+      {Array.from({length: 32}).map((_, i) => {
+        const a = (i * (360 / 32) - 90) * Math.PI / 180;
+        const x1 = 200 + Math.cos(a) * 180;
+        const y1 = 200 + Math.sin(a) * 180;
+        const x2 = 200 + Math.cos(a) * 195;
+        const y2 = 200 + Math.sin(a) * 195;
+        return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke-width={i % 4 === 0 ? 1.6 : 0.8} stroke-opacity={i % 4 === 0 ? 1 : 0.55} />
+      })}
+    </g>
+
+    <!-- Mid ring -->
+    <circle cx="200" cy="200" r="140" stroke-opacity="0.3" stroke-dasharray="2 6" />
+
+    <!-- Dental arch — upper U -->
+    <g class={isStatic ? "" : "spin-rev"} style="transform-origin: 200px 200px;">
+      <path d="M 90 180 Q 90 100 200 95 Q 310 100 310 180" stroke="currentColor" stroke-width="1.6" />
+      <!-- 8 little tooth markers along upper arch -->
+      {Array.from({length: 8}).map((_, i) => {
+        const t = i / 7;
+        const x = 90 + (310 - 90) * t;
+        const y = 180 - 90 * Math.sin(Math.PI * t);
+        return <circle cx={x} cy={y} r="6" stroke="currentColor" stroke-width="1" />
+      })}
+      <!-- Lower arch — mirrored -->
+      <path d="M 90 220 Q 90 300 200 305 Q 310 300 310 220" stroke="currentColor" stroke-width="1.6" />
+      {Array.from({length: 8}).map((_, i) => {
+        const t = i / 7;
+        const x = 90 + (310 - 90) * t;
+        const y = 220 + 90 * Math.sin(Math.PI * t);
+        return <circle cx={x} cy={y} r="6" stroke="currentColor" stroke-width="1" />
+      })}
+    </g>
+
+    <!-- Centre crosshair -->
+    <g stroke-opacity="0.55">
+      <line x1="200" y1="190" x2="200" y2="210" />
+      <line x1="190" y1="200" x2="210" y2="200" />
+      <circle cx="200" cy="200" r="4" />
+    </g>
+
+    <!-- Labels -->
+    <g font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" stroke="none" opacity="0.7">
+      <text x="200" y="14" text-anchor="middle">O-032 · OCCLUSION MAP</text>
+      <text x="200" y="396" text-anchor="middle">— 32 POSITIONS —</text>
+    </g>
+  </svg>
+)}

@@ -1,0 +1,54 @@
+---
+import Mark from "./Mark.astro";
+
+const nav = [
+  { href: "#system",  label: "System" },
+  { href: "#late",    label: "Late access" },
+  { href: "#axioms",  label: "Axioms" },
+  { href: "#hours",   label: "Hours" },
+  { href: "#contact", label: "Contact" },
+];
+---
+<!-- Top utility strip -->
+<div class="bg-void border-b border-graphite text-fog text-[11px] font-mono uppercase tracking-[0.22em]">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 py-2 flex items-center justify-between">
+    <span class="text-neon">● online</span>
+    <span class="hidden sm:inline">SYS // London · GMT+0 · OPEN UNTIL 22:00</span>
+    <span class="hidden md:inline">v 2.6.0 — build 0524</span>
+  </div>
+</div>
+
+<header class="bg-void/85 backdrop-blur-md border-b border-graphite sticky top-0 z-40">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 flex items-center justify-between gap-6 py-4">
+    <a href="#" class="flex items-center gap-3 group" aria-label="Decadental home">
+      <Mark size={40} class="text-neon shrink-0" />
+      <span class="flex flex-col leading-none">
+        <span class="font-display font-semibold text-[20px] tracking-tight text-bone">DECADENTAL</span>
+        <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-fog mt-1">/ recompiled</span>
+      </span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden lg:flex items-center gap-8 text-[13px] font-mono uppercase tracking-[0.18em] text-mist">
+      {nav.map((item, i) => (
+        <a href={item.href} class="hover:text-neon transition-colors flex items-center gap-2">
+          <span class="text-neon/60">0{i + 1}</span>
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </nav>
+
+    <a
+      href="#contact"
+      class="hidden sm:inline-flex items-center gap-2 bg-neon text-void font-mono uppercase tracking-[0.18em] text-[12px] px-4 py-2.5 hover:bg-acid transition-colors"
+    >
+      Initialise →
+    </a>
+    <a
+      href="#contact"
+      class="sm:hidden inline-flex items-center bg-neon text-void font-mono uppercase tracking-[0.18em] text-[11px] px-3 py-2"
+      aria-label="Book"
+    >
+      Init →
+    </a>
+  </div>
+</header>

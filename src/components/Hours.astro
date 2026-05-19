@@ -1,0 +1,46 @@
+---
+const hours = [
+  { day: "Monday",    times: "07:00 — 22:00", tag: "LATE" },
+  { day: "Tuesday",   times: "07:00 — 22:00", tag: "LATE" },
+  { day: "Wednesday", times: "07:00 — 22:00", tag: "LATE" },
+  { day: "Thursday",  times: "07:00 — 22:00", tag: "LATE" },
+  { day: "Friday",    times: "07:00 — 22:00", tag: "LATE" },
+  { day: "Saturday",  times: "09:00 — 17:00", tag: "OPEN" },
+  { day: "Sunday",    times: "Emergency only", tag: "EMERG" },
+];
+---
+
+<section id="hours" class="relative bg-obsidian border-b border-graphite">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 py-24 md:py-32 grid md:grid-cols-12 gap-12 items-start">
+
+    <div class="md:col-span-5">
+      <p class="eyebrow crosshair">module 05 // schedule</p>
+      <h2 class="display-lg mt-6 text-bone">
+        Hours of<br/><span class="text-plasma glow-plasma">operation.</span>
+      </h2>
+      <p class="mt-8 text-mist text-[15px] leading-[1.7] max-w-md">
+        Late five nights a week, full Saturday clinic, Sunday held in reserve for
+        genuine emergencies. We do not operate walk-in service; all reservations
+        confirmed in writing.
+      </p>
+    </div>
+
+    <div class="md:col-span-7">
+      <ul class="border-t border-graphite font-mono">
+        {hours.map(h => (
+          <li class="grid grid-cols-[1fr,auto,90px] items-center gap-4 py-4 border-b border-graphite">
+            <span class="font-display font-medium text-[22px] tracking-tight text-bone">{h.day}</span>
+            <span class="text-mist text-[14px] tnum">{h.times}</span>
+            <span class="text-right">
+              <span class={`text-[10px] tracking-[0.22em] px-2 py-1 border ${
+                h.tag === "LATE"  ? "border-acid text-acid"
+                : h.tag === "OPEN"  ? "border-neon text-neon"
+                : "border-rose text-rose"
+              }`}>{h.tag}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
