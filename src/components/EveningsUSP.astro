@@ -3,12 +3,12 @@ import ToothWire from "./ToothWire.astro";
 ---
 
 <section id="late" class="relative bg-obsidian border-b border-graphite overflow-hidden">
-  <!-- Background occlusion wire -->
-  <div class="absolute -right-32 -top-24 text-acid/15 pointer-events-none">
-    <ToothWire variant="occlusion" size={640} />
+  <!-- Background tooth meshes -->
+  <div class="absolute -right-32 -top-24 text-acid/20 pointer-events-none hidden md:block">
+    <ToothWire variant="molar" size={640} speed={0.5} tilt={0.6} lat={14} lon={20} />
   </div>
-  <div class="absolute -left-40 -bottom-32 text-neon/12 pointer-events-none">
-    <ToothWire variant="molar" size={520} />
+  <div class="absolute -left-40 -bottom-32 text-neon/15 pointer-events-none hidden md:block">
+    <ToothWire variant="canine" size={520} speed={-0.4} start={45} tilt={0.3} lat={14} lon={18} />
   </div>
 
   <div class="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 md:py-32 grid md:grid-cols-12 gap-12 items-start">

@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import ToothWireScript from "../components/ToothWireScript.astro";
 
 interface Props {
   title?: string;
@@ -53,5 +54,6 @@ const canon = canonical ?? site;
   </head>
   <body>
     <slot />
+    <ToothWireScript />
   </body>
 </html>

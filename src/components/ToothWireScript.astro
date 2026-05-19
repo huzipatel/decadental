@@ -1,0 +1,208 @@
+---
+/*
+ * Page-level script that animates every .tw-mesh on the page.
+ * Single shared rAF loop across all instances → cheap.
+ */
+---
+<script is:inline>
+(function () {
+  const meshes = Array.from(document.querySelectorAll(".tw-mesh"));
+  if (!meshes.length) return;
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- tooth profile generators ---------- */
+  // Returns radius r(y, phi) for the given variant. y in [-1, 1], phi in [0, 2π).
+  function profile(variant) {
+    if (variant === "incisor") {
+      return (y, phi) => {
+        // Crown: blade-shaped, wider mesio-distally than labio-lingually
+        // Root: long, tapered single root
+        if (y > 0.3) {
+          // crown: ellipse shape
+          const w = 0.55, d = 0.30;
+          const base = 1 / Math.sqrt((Math.cos(phi)/w)**2 + (Math.sin(phi)/d)**2);
+          // crown narrowing toward incisal edge
+          return base * (0.55 + 0.45 * (1 - (y - 0.3) / 0.7));
+        }
+        if (y > -0.1) return 0.45 + 0.05 * Math.cos(2 * phi);   // neck/gumline
+        // single tapered root
+        const t = (y + 0.1) / -0.9; // 0..1 going down
+        return 0.42 * (1 - 0.85 * t * t);
+      };
+    }
+    if (variant === "canine") {
+      return (y, phi) => {
+        if (y > 0.3) {
+          // single pointed cusp - asymmetric
+          const t = (y - 0.3) / 0.7;
+          const cusp = 1 - t * 0.9;
+          return 0.45 * cusp + 0.05 * Math.cos(phi);
+        }
+        if (y > -0.2) return 0.42;
+        const t = (y + 0.2) / -0.8;
+        return 0.40 * (1 - 0.88 * t * t);
+      };
+    }
+    // molar (default): 4-cusp crown, narrow neck, twin splaying roots
+    return (y, phi) => {
+      // Crown region (y: 0.15 → 1.0)
+      if (y > 0.15) {
+        // 4 cusps via cos(2*phi). Amplitude bumped for visibility.
+        const cuspMod = 0.22 * Math.cos(2 * phi) * Math.cos(2 * phi);   // 0..0.22
+        // dome shape
+        const t = (y - 0.15) / 0.85;
+        const dome = Math.pow(Math.max(0, 1 - t * t * 0.7), 0.6);
+        return (0.58 + cuspMod) * dome + 0.10;
+      }
+      // Cervical neck (y: -0.05 → 0.15) — clear narrowing
+      if (y > -0.05) {
+        const t = (y + 0.05) / 0.20;            // 0..1
+        return 0.42 + 0.20 * t;                 // 0.42 → 0.62
+      }
+      // Twin roots region (y: -1.0 → -0.05) — splay outward then taper
+      const t = (y + 0.05) / -0.95;             // 0..1 going down
+      // Each root tapers; the pair lives along the X axis (phi 0 and π)
+      // Use a function that pulls the lobe out at phi=0 / π and inward at π/2 / 3π/2
+      const splay = 1 + 0.35 * Math.cos(phi) * Math.cos(phi) * t;
+      const taper = 0.42 * (1 - 0.85 * t * t);
+      const gap   = 1 - 0.45 * Math.sin(phi) * Math.sin(phi);   // inward at top/bottom
+      return taper * splay * gap;
+    };
+  }
+
+  /* ---------- build vertices + edges for a mesh ---------- */
+  function buildMesh(el) {
+    const variant = el.dataset.variant || "molar";
+    const lat = parseInt(el.dataset.lat || "14", 10);
+    const lon = parseInt(el.dataset.lon || "22", 10);
+    const radius = profile(variant);
+    const verts = [];
+    // Latitude rings; y goes from +1 (crown top) to -1 (root tip)
+    for (let i = 0; i <= lat; i++) {
+      const v = i / lat;
+      const y = 1 - 2 * v; // +1 → -1
+      for (let j = 0; j < lon; j++) {
+        const phi = (j / lon) * Math.PI * 2;
+        const r = radius(y, phi);
+        const x = r * Math.cos(phi);
+        const z = r * Math.sin(phi);
+        verts.push([x, y, z]);
+      }
+    }
+    // Edges: each vertex connects to next-in-ring (j+1) and next-ring (i+1)
+    const edges = [];
+    for (let i = 0; i <= lat; i++) {
+      for (let j = 0; j < lon; j++) {
+        const idx = i * lon + j;
+        // ring edge (longitudinal)
+        const ringNext = i * lon + ((j + 1) % lon);
+        edges.push([idx, ringNext]);
+        // axial edge (latitudinal)
+        if (i < lat) {
+          const next = (i + 1) * lon + j;
+          edges.push([idx, next]);
+        }
+      }
+    }
+    return { verts, edges, lon };
+  }
+
+  /* ---------- mount each mesh ---------- */
+  const mounted = meshes.map(el => {
+    const m = buildMesh(el);
+    const svg = el.querySelector("svg");
+    const gEdges = el.querySelector(".tw-edges");
+    const gVerts = el.querySelector(".tw-verts");
+    const size = parseFloat(el.dataset.size || "360");
+    const speed = parseFloat(el.dataset.speed || "1");
+    const start = parseFloat(el.dataset.start || "0") * Math.PI / 180;
+    const tilt = parseFloat(el.dataset.tilt || "0.45");
+    // Create DOM nodes once
+    const lineEls = m.edges.map(() => {
+      const ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      ln.setAttribute("stroke-width", "0.9");
+      gEdges.appendChild(ln);
+      return ln;
+    });
+    const dotEls = m.verts.map(() => {
+      const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      c.setAttribute("r", "1.4");
+      gVerts.appendChild(c);
+      return c;
+    });
+    return { el, m, svg, lineEls, dotEls, size, speed, start, tilt };
+  });
+
+  /* ---------- per-frame projection ---------- */
+  // Orthographic + weak perspective. Scale tuned so radius=1 ≈ 35% of size.
+  function project(instance, t) {
+    const { m, lineEls, dotEls, size, speed, start, tilt } = instance;
+    const ang = start + (reduced ? 0 : t * 0.0005 * speed);
+    const cosA = Math.cos(ang), sinA = Math.sin(ang);
+    const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
+    const cx = size / 2, cy = size / 2;
+    const scale = size * 0.38;
+    const camZ = 3; // for weak perspective
+    // First: project all vertices to screen
+    const px = new Array(m.verts.length);
+    const py = new Array(m.verts.length);
+    const pd = new Array(m.verts.length); // depth proxy in [0..1], 1=front
+    for (let k = 0; k < m.verts.length; k++) {
+      const [vx, vy, vz] = m.verts[k];
+      // Y-axis rotation
+      let x = vx * cosA + vz * sinA;
+      let z = -vx * sinA + vz * cosA;
+      let y = vy;
+      // X-axis tilt (so we see slight top-down)
+      const y2 = y * cosT - z * sinT;
+      const z2 = y * sinT + z * cosT;
+      // perspective
+      const persp = camZ / (camZ - z2);
+      px[k] = cx + x * scale * persp;
+      py[k] = cy - y2 * scale * persp;
+      pd[k] = (z2 + 1.2) / 2.4; // crude depth, used for alpha
+    }
+    // Update edges
+    for (let k = 0; k < m.edges.length; k++) {
+      const [a, b] = m.edges[k];
+      const el = lineEls[k];
+      el.setAttribute("x1", px[a].toFixed(2));
+      el.setAttribute("y1", py[a].toFixed(2));
+      el.setAttribute("x2", px[b].toFixed(2));
+      el.setAttribute("y2", py[b].toFixed(2));
+      const d = (pd[a] + pd[b]) / 2;
+      // Stronger depth fade: back edges nearly invisible, front edges crisp
+      const alpha = Math.pow(Math.max(0.0, Math.min(1.0, d)), 2.2);
+      el.setAttribute("stroke-opacity", Math.max(0.05, alpha).toFixed(2));
+      el.setAttribute("stroke-width", (0.4 + alpha * 1.0).toFixed(2));
+    }
+    // Update verts
+    for (let k = 0; k < m.verts.length; k++) {
+      const c = dotEls[k];
+      c.setAttribute("cx", px[k].toFixed(2));
+      c.setAttribute("cy", py[k].toFixed(2));
+      const d = pd[k];
+      const alpha = Math.pow(Math.max(0.0, d), 2.2);
+      c.setAttribute("fill-opacity", Math.max(0.05, alpha).toFixed(2));
+      c.setAttribute("r", (0.5 + alpha * 1.6).toFixed(2));
+    }
+  }
+
+  if (reduced) {
+    // Render once at the starting angle.
+    mounted.forEach(i => project(i, 0));
+  } else {
+    let last = performance.now();
+    let acc = 0;
+    function tick(now) {
+      const dt = now - last;
+      last = now;
+      acc += dt;
+      mounted.forEach(i => project(i, acc));
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+})();
+</script>

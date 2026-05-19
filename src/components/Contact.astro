@@ -3,9 +3,9 @@ import ToothWire from "./ToothWire.astro";
 ---
 
 <section id="contact" class="relative bg-void border-b border-graphite overflow-hidden">
-  <!-- ambient wire backdrop -->
-  <div class="absolute -right-40 top-0 text-neon/10 pointer-events-none">
-    <ToothWire variant="occlusion" size={700} />
+  <!-- ambient mesh backdrop -->
+  <div class="absolute -right-40 top-0 text-neon/15 pointer-events-none hidden md:block">
+    <ToothWire variant="molar" size={700} speed={0.4} tilt={0.5} lat={14} lon={22} />
   </div>
 
   <div class="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 md:py-32 grid md:grid-cols-12 gap-12 items-start">
